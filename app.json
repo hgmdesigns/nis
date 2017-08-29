@@ -16,9 +16,9 @@
     "packagerOpts": {
       "assetExts": ["ttf", "mp4"]
     },
-    "ios": {
-      "supportsTablet": true
+    "android": {
+      "package": "com.hgm.enis"
     },
-    
+    "androidStatusBarColor": "#061B30"    
   }
 }
