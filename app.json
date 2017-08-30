@@ -19,6 +19,9 @@
     "android": {
       "package": "com.hgm.enis"
     },
-    "androidStatusBarColor": "#061B30"    
+    "androidStatusBarColor": "#061B30" ,
+    "ios": {
+      "bundleIdentifier": "com.yourcompany.yourappname"
+    },   
   }
 }

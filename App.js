@@ -7,14 +7,22 @@ import {
   Button,
   KeyboardAvoidingView 
 } from 'react-native';
-import { TabNavigator } from 'react-navigation';
-import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
+import { TabNavigator, TabView } from 'react-navigation';
+import {  Agenda } from 'react-native-calendars';
 import { GiftedChat } from 'react-native-gifted-chat';
 
+
+
+
+
 class HomeScreen extends React.Component{
-  static navigationOptions = {
-    title: 'CHATS',
-  };
+  static navigationOptions: {
+      title: 'CHATS',
+      headerStyle: {
+        backgroundColor: '#061B30',
+      },
+      headerTintColor: '#fff'
+    };
 
   state = {
     messages: [],
@@ -61,6 +69,7 @@ class HomeScreen extends React.Component{
 class CalenderScreen extends React.Component{
   static navigationOptions = {
     title: 'CALENDER',
+    tintColor: '#FAFCFF'
   };
   constructor(props) {
     super(props);
@@ -181,4 +190,4 @@ export default MainScreenNavigator = TabNavigator({
   Chat: { screen: CalenderScreen },
   Paper: { screen: PaperScreen},
   Profile: { screen: ProfileScreen},
-});
+},);
