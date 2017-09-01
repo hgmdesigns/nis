@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import { GiftedChat } from 'react-native-gifted-chat';
+import Backend from './api/firebase';
 
 export default class ChatScreen extends React.Component{
   static navigationOptions: {
@@ -22,26 +23,40 @@ export default class ChatScreen extends React.Component{
   state = {
     messages: [],
   };
+  componentWillMount() {
 
-
-
-  onSend(messages = []) {
-    this.setState((previousState) => ({
-      messages: GiftedChat.append(previousState.messages, messages),
-    }));
   }
 
   render() {
     return (
       <GiftedChat
         messages={this.state.messages}
-        onSend={(messages) => this.onSend(messages)}
+        onSend={(message) => {
+          Backend.sendMessage(message);
+        }}
         user={{
-          _id: 1,
-          name: 'test'
+          _id: Backend.getUid(),
+          name: this.props.name,
         }}
       />
     );
   }
-
+  ComponentDidMount() {
+    Backend.loadMessages((message) => {
+      this.setState((previousState) => {
+        return {
+          messages: GiftedChat.append(previousState.messages, message),
+          };
+      });
+    });
+  }
+  componentWillUnmount() {
+    Backend.closeChat();
+  }
 }
+
+
+  ChatScreen.defaultProps = {
+    name: "Hassan",
+  };
+

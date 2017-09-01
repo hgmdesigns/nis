@@ -13,8 +13,8 @@ export default class ProfileScreen extends React.Component{
 	render(){
 		return(
 			<View>
-				<Image />
-				<Text>{this.state.name}</Text>
+				
+				<Text>Lets ss</Text>
 			</View>	
 		) 
 	}
