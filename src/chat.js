@@ -1,23 +1,12 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  AppRegistry,
-  StyleSheet,
-  Button,
-  KeyboardAvoidingView 
-} from 'react-native';
 
 import { GiftedChat } from 'react-native-gifted-chat';
 import Backend from './api/firebase';
+ 
 
-export default class ChatScreen extends React.Component{
+export default class Chat extends React.Component {
   static navigationOptions: {
       title: 'CHATS',
-      headerStyle: {
-        backgroundColor: '#061B30',
-      },
-      headerTintColor: '#fff'
     };
 
   state = {
@@ -26,7 +15,6 @@ export default class ChatScreen extends React.Component{
   componentWillMount() {
 
   }
-
   render() {
     return (
       <GiftedChat
@@ -41,12 +29,12 @@ export default class ChatScreen extends React.Component{
       />
     );
   }
-  ComponentDidMount() {
+  componentDidMount() {
     Backend.loadMessages((message) => {
       this.setState((previousState) => {
         return {
           messages: GiftedChat.append(previousState.messages, message),
-          };
+        };
       });
     });
   }
@@ -55,8 +43,10 @@ export default class ChatScreen extends React.Component{
   }
 }
 
+Chat.defaultProps = {
+  name: 'Hassan',
+};
 
-  ChatScreen.defaultProps = {
-    name: "Hassan",
-  };
-
+Chat.propTypes = {
+  name: React.PropTypes.string,
+};
