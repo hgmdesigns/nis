@@ -30,7 +30,7 @@ class Backend {
   }
   // retrieve the messages from the Backend
   loadMessages(callback) {
-    this.messagesRef = firebase.database().ref('messages');
+    this.messagesRef = firebase.database().ref('group/10/messages');
     this.messagesRef.off();
     const onReceive = (data) => {
       const message = data.val();

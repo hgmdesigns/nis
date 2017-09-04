@@ -11,7 +11,12 @@ export default class Chat extends React.Component {
 
   state = {
     messages: [],
+    loadEarlier: true,
+    isLoadingEarlier: true,
   };
+
+
+  
   componentWillMount() {
 
   }
@@ -50,3 +55,5 @@ Chat.defaultProps = {
 Chat.propTypes = {
   name: React.PropTypes.string,
 };
+
+
