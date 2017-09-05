@@ -17,16 +17,16 @@ import * as firebase from 'firebase';
 // 4.3.0
 
 export default class LogInScreen extends Component {
-  componentWillMount() {
-    firebase.initializeApp({
-      apiKey: 'AIzaSyBy11eOj1te5UBfqYmhrX6hLIsSaaE71do',
-      authDomain: 'hgmenis.firebaseapp.com',
-      databaseURL: 'https://hgmenis.firebaseio.com',
-      projectId: 'hgmenis',
-      storageBucket: 'hgmenis.appspot.com',
-      messagingSenderId: '457564974792',
-    });
-  }
+  // componentWillMount() {
+  //   firebase.initializeApp({
+  //     apiKey: 'AIzaSyBy11eOj1te5UBfqYmhrX6hLIsSaaE71do',
+  //     authDomain: 'hgmenis.firebaseapp.com',
+  //     databaseURL: 'https://hgmenis.firebaseio.com',
+  //     projectId: 'hgmenis',
+  //     storageBucket: 'hgmenis.appspot.com',
+  //     messagingSenderId: '457564974792',
+  //   });
+  // }
   constructor(props) {
     super(props);
     this.state = {
@@ -92,7 +92,7 @@ class Feild extends Component {
   }
 }
 
-App.propType = {
+LogInScreen.propType = {
   title: PropTypes.string.isRequired,
   password: PropTypes.string,
   email: PropTypes.string,

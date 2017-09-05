@@ -1,5 +1,5 @@
-import firebase from 'firebase';
-import LogInScreen from '../account/logIn';
+import * as firebase from 'firebase';
+import firebaseApp from './firebaseApp';
 
 class Backend {
   uid = '';
@@ -38,7 +38,7 @@ class Backend {
         },
       });
     };
-    this.messagesRef.limitToLast(1).on('child_added', onReceive);
+    this.messagesRef.limitToLast(40).on('child_added', onReceive);
   }
   // send the message to the Backend
   sendMessage(message) {
@@ -49,7 +49,6 @@ class Backend {
         createdAt: firebase.database.ServerValue.TIMESTAMP,
       });
     }
-    console.log(message);
   }
   // close the connection to the Backend
   closeChat() {
