@@ -1,85 +1,79 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
- // 15.5.10
- // 15.5.10
- // 15.5.10
-import { 
+// 15.5.10
+// 15.5.10
+// 15.5.10
+import {
   Text,
   View,
   StyleSheet,
   TextInput,
-  TouchableOpacity 
-  } from 'react-native';
+  TouchableOpacity,
+} from 'react-native';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
- // 0.3.1
- // 0.3.1
- import * as firebase from 'firebase';
- // 4.3.0
+// 0.3.1
+// 0.3.1
+import * as firebase from 'firebase';
+// 4.3.0
 
-export default class App extends Component {
-  componentWillMount(){
+export default class LogInScreen extends Component {
+  componentWillMount() {
     firebase.initializeApp({
-    apiKey: "AIzaSyBy11eOj1te5UBfqYmhrX6hLIsSaaE71do",
-    authDomain: "hgmenis.firebaseapp.com",
-    databaseURL: "https://hgmenis.firebaseio.com",
-    projectId: "hgmenis",
-    storageBucket: "hgmenis.appspot.com",
-    messagingSenderId: "457564974792"
+      apiKey: 'AIzaSyBy11eOj1te5UBfqYmhrX6hLIsSaaE71do',
+      authDomain: 'hgmenis.firebaseapp.com',
+      databaseURL: 'https://hgmenis.firebaseio.com',
+      projectId: 'hgmenis',
+      storageBucket: 'hgmenis.appspot.com',
+      messagingSenderId: '457564974792',
     });
   }
-  constructor(props){
+  constructor(props) {
     super(props);
-     this.state = {
-        email: '',
-        password: '',
-        response: ''
-      }
-      this.signUp = this.signUp.bind(this);
-}
-  async signUp(){
+    this.state = {
+      email: '',
+      password: '',
+      response: '',
+    };
+    this.signIn = this.signIn.bind(this);
+  }
+  async signIn() {
     try {
-      await firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password) 
-        this.setState({
-          response: "Account created!"
-        })
+      await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+       this.setState({
+        response: 'Account signined in!!',
+      });
     } catch(error) {
       console.log(error);
       this.setState({
-        response: error.toString()
-      })
+        response: error,
+      });
     }
   }
-  async signIn(){
-    
-  }
-  
+
   render() {
     return (
-      <View style={styles.container} >
-        <Feild 
-        placeholder='type your email' 
-        title='Email' 
-        onChangeText={(email) => this.setState({email})}
+      <View style={styles.container}>
+        <Feild
+          placeholder="type your email"
+          title="Email"
+          onChangeText={email => this.setState({ email })}
         />
-        <Feild 
-        placeholder='type your password' 
-        title='Password' 
-        secureTextEntry={true} 
-        onChangeText={(password) => this.setState({password})} 
+        <Feild
+          placeholder="type your password"
+          title="Password"
+          secureTextEntry={true}
+          onChangeText={password => this.setState({ password })}
         />
-        <TouchableOpacity
-          onPress={this.signUp}
-          >
-          <View style={styles.btn} >
-            <Text style={styles.text} >SIGN IN</Text>
+        <TouchableOpacity onPress={this.signIn}>
+          <View style={styles.btn}>
+            <Text style={styles.text}>SIGN IN</Text>
           </View>
         </TouchableOpacity>
-        <KeyboardSpacer/>
+        <KeyboardSpacer />
       </View>
-      )
+    );
   }
 }
-
 
 class Feild extends Component {
   render() {
@@ -87,11 +81,11 @@ class Feild extends Component {
       <View>
         <Text style={styles.title}>{this.props.title}</Text>
         <TextInput
-        underlineColorAndroid='transparent'
-        style={styles.input}
-        secureTextEntry={this.props.secureTextEntry}
-        placeholder={this.props.placeholder}
-        onChangeText={this.props.onChangeText}
+          underlineColorAndroid="transparent"
+          style={styles.input}
+          secureTextEntry={this.props.secureTextEntry}
+          placeholder={this.props.placeholder}
+          onChangeText={this.props.onChangeText}
         />
       </View>
     );
@@ -101,8 +95,8 @@ class Feild extends Component {
 App.propType = {
   title: PropTypes.string.isRequired,
   password: PropTypes.string,
-  email: PropTypes.string
-}
+  email: PropTypes.string,
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -120,7 +114,7 @@ const styles = StyleSheet.create({
     padding: 8,
     marginLeft: 16,
     marginRight: 16,
-    marginBottom: 24
+    marginBottom: 24,
   },
   title: {
     fontSize: 24,
@@ -130,13 +124,11 @@ const styles = StyleSheet.create({
   },
   text: {
     margin: 16,
-    color: 'white'
+    color: 'white',
   },
   btn: {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#2189C5',
-  }
+  },
 });
-
-

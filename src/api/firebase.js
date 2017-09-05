@@ -1,17 +1,11 @@
 import firebase from 'firebase';
+import LogInScreen from '../account/logIn';
 
 class Backend {
   uid = '';
   messagesRef = null;
   // initialize Firebase Backend
   constructor() {
-    firebase.initializeApp({
-      apiKey: 'AIzaSyBy11eOj1te5UBfqYmhrX6hLIsSaaE71do',
-      authDomain: 'hgmenis.firebaseapp.com',
-      databaseURL: 'https://hgmenis.firebaseio.com',
-      storageBucket: 'hgmenis.appspot.com',
-    });
-
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.setUid(user.uid);
