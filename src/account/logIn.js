@@ -1,54 +1,70 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// 15.5.10
-// 15.5.10
-// 15.5.10
 import {
   Text,
   View,
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator
 } from 'react-native';
-import KeyboardSpacer from 'react-native-keyboard-spacer';
-// 0.3.1
-// 0.3.1
 import * as firebase from 'firebase';
-// 4.3.0
+import firebaseApp from '../api/firebaseApp';
+
 
 export default class LogInScreen extends Component {
-  // componentWillMount() {
-  //   firebase.initializeApp({
-  //     apiKey: 'AIzaSyBy11eOj1te5UBfqYmhrX6hLIsSaaE71do',
-  //     authDomain: 'hgmenis.firebaseapp.com',
-  //     databaseURL: 'https://hgmenis.firebaseio.com',
-  //     projectId: 'hgmenis',
-  //     storageBucket: 'hgmenis.appspot.com',
-  //     messagingSenderId: '457564974792',
-  //   });
-  // }
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       email: '',
       password: '',
       response: '',
+      loading: false
     };
     this.signIn = this.signIn.bind(this);
   }
   async signIn() {
+      this.setState({
+        loading: true
+      })
+
     try {
       await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-       this.setState({
-        response: 'Account signined in!!',
-      });
-    } catch(error) {
-      console.log(error);
-      this.setState({
-        response: error,
-      });
+        onLoginSucess()
+       console.log('Hurrah!');
+    } catch (error) {
+      return this.onLoginFail.bind(this)
     }
   }
+
+   onLoginFail(){
+    this.setState({
+      response: 'Authentication Failed',
+      loading: false
+    })
+   }
+
+   onLoginSucess(){
+    this.setState({
+      email: '',
+      password: '',
+      loading: false
+    })
+   }
+
+   renderButton() {
+      if(this.state.loading) {
+        return <ActivityIndicator style={styles.spinner} size="small" />
+      }
+
+      return (
+      <TouchableOpacity onPress={this.signIn}>
+          <View style={styles.btn}>
+            <Text style={styles.text}>SIGN IN</Text>
+          </View>
+        </TouchableOpacity>
+      );
+    }
 
   render() {
     return (
@@ -64,12 +80,7 @@ export default class LogInScreen extends Component {
           secureTextEntry={true}
           onChangeText={password => this.setState({ password })}
         />
-        <TouchableOpacity onPress={this.signIn}>
-          <View style={styles.btn}>
-            <Text style={styles.text}>SIGN IN</Text>
-          </View>
-        </TouchableOpacity>
-        <KeyboardSpacer />
+        {this.renderButton()}
       </View>
     );
   }
@@ -131,4 +142,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#2189C5',
   },
+  error: {
+    color: 'red',
+    alignSelf: 'center',
+  },
+  spinner: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#2189C5',
+  }
 });

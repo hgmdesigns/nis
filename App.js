@@ -5,33 +5,52 @@ import {
   AppRegistry,
   StyleSheet,
   Button,
-  KeyboardAvoidingView 
+  KeyboardAvoidingView,
+  ActivityIndicator
 } from 'react-native';
-import { TabNavigator, NavigationActions } from 'react-navigation';
+import * as firebase from 'firebase';
+import firebaseApp from './src/api/firebaseApp';
+import LogInScreen from './src/account/logIn';
+import MainScreenNavigator from './src/navigation/authorized';
 
-componentWillMount(){
-const resetAction = NavigationActions.reset({
-       index: 0,
-       actions: [
-            NavigationActions.navigate({ routeName: LogInScreen}),
-       ]
-       });
-this.props.navigation.dispatch(resetAction);
+
+
+export default class App extends Component {
+	constructor() {
+	super();
+	this.state = {
+		loggedIn: null,
+	}
+
+}
+componentWillMount() {
+	firebase.auth().onAuthStateChanged((user) => {
+	if (user) {
+		this.setState({
+			loggedIn: true
+		})
+	}
+	else {
+		this.setState({
+			loggedIn: false
+		})
+	}})
 }
 
-//Importing all the screens
-import CalenderScreen from './src/calendar';
-import ChatScreen from './src/chat.js';
-import PaperScreen from './src/papers.js';
-import ProfileScreen from './src/profile';
-import LogInScreen from './src/account/logIn';
+renderContent(){
+	switch (this.state.loggedIn) {
+		case true:
+			return <MainScreenNavigator />
+		case false:
+			return <LogInScreen />
+		default:
+			return <Text>11</Text>
+	}
+}
+	render(){
+		return this.renderContent()
+}
+
+}
 
 
-
-//Exporting the screen via react-navigatiob
-export default MainScreenNavigator = TabNavigator({
-  Chat: { screen: ChatScreen },
-  Calendar: { screen: CalenderScreen },
-  Paper: { screen: PaperScreen},
-  Profile: { screen: ProfileScreen},
-},);
