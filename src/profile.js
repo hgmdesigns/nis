@@ -12,9 +12,8 @@ export default class ProfileScreen extends React.Component{
 	static navigationOptions = {
 		title: 'PROFILE',
 	};
-	const user = firebase.auth().currentUser;
-	console.log(user);
 	render(){
+		const user = firebase.auth().currentUser;
 		return(
 			<View>
 				<Text>{user.displayName}</Text>

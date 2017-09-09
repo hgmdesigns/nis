@@ -40,17 +40,28 @@ componentWillMount() {
 renderContent(){
 	switch (this.state.loggedIn) {
 		case true:
-			return <MainScreenNavigator />
+			return <MainScreenNavigator />;
 		case false:
-			return <LogInScreen />
+			return <LogInScreen />;
 		default:
-			return <Text>11</Text>
+			return (
+				<View style={styles.spiner}>
+					<ActivityIndicator  size="large" />
+				</View>
+			);
 	}
 }
 	render(){
 		return this.renderContent()
-}
+	}
 
 }
 
 
+const styles = StyleSheet.create({
+	spiner: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center'
+	}
+})
