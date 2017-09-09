@@ -7,59 +7,44 @@ import {
   Button
 } from 'react-native';
 import {  Agenda } from 'react-native-calendars';
-
+import * as firebase from 'firebase';
+import firebaseApp from './api/firebaseApp';
 
 export default class CalenderScreen extends React.Component{
   static navigationOptions = {
     title: 'CALENDER',
-    tintColor: '#FAFCFF'
   };
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
-      items: {}
-    };
+      items: {},
   }
+}
 
   render() {
+    console.log(this.state.items);
     return (
       <Agenda
         items={this.state.items}
         loadItemsForMonth={this.loadItems.bind(this)}
-        selected={'2017-08-26'}
+        selected={'2017-09-09'}
         renderItem={this.renderItem.bind(this)}
         renderEmptyDate={this.renderEmptyDate.bind(this)}
         rowHasChanged={this.rowHasChanged.bind(this)}
+        hideKnob={true}
         
       />
     );
   }
 
-  loadItems(day) {
-    setTimeout(() => {
-      for (let i = -15; i < 85; i++) {
-        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-        const strTime = this.timeToString(time);
-        if (!this.state.items[strTime]) {
-          this.state.items[strTime] = [];
-          const numItems = Math.floor(Math.random() * 5);
-          for (let j = 0; j < numItems; j++) {
-            this.state.items[strTime].push({
-              name: 'SS Test on ' + strTime,
-              height: Math.max(50, Math.floor(Math.random() * 150))
-            });
-          }
-        }
-      }
-      console.log(this.state.items);
-      const newItems = {};
-      Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
+  loadItems(){
+    const dbRef = firebase.database().ref().child('events');
+    dbRef.on('value', snap => {
       this.setState({
-        items: newItems
+        items: snap.val()
       });
-    }, 1000);
-    console.log(`Load Items for ${day.year}-${day.month}`);
-  }
+    });
+ }
 
   renderItem(item) {
     return (
