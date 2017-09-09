@@ -30,9 +30,7 @@ export default class CalenderScreen extends React.Component{
         renderItem={this.renderItem.bind(this)}
         renderEmptyDate={this.renderEmptyDate.bind(this)}
         rowHasChanged={this.rowHasChanged.bind(this)}
-        // monthFormat={'yyyy'}
-        // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
-        //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
+        
       />
     );
   }
@@ -53,14 +51,14 @@ export default class CalenderScreen extends React.Component{
           }
         }
       }
-      //console.log(this.state.items);
+      console.log(this.state.items);
       const newItems = {};
       Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
       this.setState({
         items: newItems
       });
     }, 1000);
-    // console.log(`Load Items for ${day.year}-${day.month}`);
+    console.log(`Load Items for ${day.year}-${day.month}`);
   }
 
   renderItem(item) {
@@ -89,7 +87,7 @@ const styles = StyleSheet.create({
   item: {
     backgroundColor: 'white',
     flex: 1,
-    borderRadius: 5,
+    borderRadius: 8,
     padding: 10,
     marginRight: 10,
     marginTop: 17

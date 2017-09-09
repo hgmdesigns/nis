@@ -1,24 +1,16 @@
-import firebase from 'firebase';
+import * as firebase from 'firebase';
+import firebaseApp from './firebaseApp';
 
 class Backend {
   uid = '';
   messagesRef = null;
   // initialize Firebase Backend
   constructor() {
-    firebase.initializeApp({
-      apiKey: 'AIzaSyBy11eOj1te5UBfqYmhrX6hLIsSaaE71do',
-      authDomain: 'hgmenis.firebaseapp.com',
-      databaseURL: 'https://hgmenis.firebaseio.com',
-      storageBucket: 'hgmenis.appspot.com',
-    });
-
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.setUid(user.uid);
       } else {
-        firebase.auth().signInAnonymously().catch((error) => {
-          alert(error.message);
-        });
+        console.log('err');
       }
     });
   }
@@ -30,7 +22,7 @@ class Backend {
   }
   // retrieve the messages from the Backend
   loadMessages(callback) {
-    this.messagesRef = firebase.database().ref('messages');
+    this.messagesRef = firebase.database().ref('group/10/messages');
     this.messagesRef.off();
     const onReceive = (data) => {
       const message = data.val();
@@ -44,7 +36,7 @@ class Backend {
         },
       });
     };
-    this.messagesRef.limitToLast(1).on('child_added', onReceive);
+    this.messagesRef.limitToLast(40).on('child_added', onReceive);
   }
   // send the message to the Backend
   sendMessage(message) {
@@ -55,7 +47,6 @@ class Backend {
         createdAt: firebase.database.ServerValue.TIMESTAMP,
       });
     }
-    console.log(message);
   }
   // close the connection to the Backend
   closeChat() {
