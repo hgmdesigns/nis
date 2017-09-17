@@ -4,15 +4,15 @@ import {
   Text,
 } from 'react-native';
 
-export default class PaperScreen extends React.Component{
+export default class PaperScreen extends React.Component {
   static navigationOptions = {
     title: 'PAPERS',
   };
-  render(){
-    return(
+  render() {
+    return (
       <View>
         <Text>Chat with me!</Text>
       </View>
-    )
+    );
   }
 }

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { GiftedChat } from 'react-native-gifted-chat';
 import Backend from './api/firebase';
- 
+
 
 export default class Chat extends React.Component {
   static navigationOptions: {
@@ -13,21 +13,6 @@ export default class Chat extends React.Component {
     loadEarlier: true,
     isLoadingEarlier: true,
   };
-  render() {
-    return (
-      <GiftedChat
-        messages={this.state.messages}
-        onSend={(message) => {
-          Backend.sendMessage(message);
-        }}
-        user={{
-          _id: Backend.getUid(),
-          name: this.props.name,
-        }}
-        loadEarlier={true}
-      />
-    );
-  }
   componentDidMount() {
     Backend.loadMessages((message) => {
       this.setState((previousState) => {
@@ -40,8 +25,23 @@ export default class Chat extends React.Component {
   componentWillUnmount() {
     Backend.closeChat();
   }
-}
 
+  render() {
+    return (
+      <GiftedChat
+        messages={this.state.messages}
+        onSend={(message) => {
+          Backend.sendMessage(message);
+        }}
+        user={{
+          id: Backend.getUid(),
+          name: this.props.name,
+        }}
+        loadEarlier={true}
+      />
+    );
+  }
+}
 Chat.defaultProps = {
   name: 'Hassan',
 };
@@ -49,5 +49,3 @@ Chat.defaultProps = {
 Chat.propTypes = {
   name: React.PropTypes.string,
 };
-
-
