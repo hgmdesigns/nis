@@ -6,7 +6,8 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert
 } from 'react-native';
 import * as firebase from 'firebase';
 import firebaseApp from '../api/firebaseApp';
@@ -19,48 +20,57 @@ export default class LogInScreen extends Component {
       email: '',
       password: '',
       response: '',
-      loading: false
+      loading: false,
     };
-    this.signIn = this.signIn.bind(this);
+    this.signUp = this.signUp.bind(this);
   }
-  async signIn() {
+  async signUp() {
       this.setState({
         loading: true
       })
 
     try {
-      await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-        onLoginSucess()
-       console.log('Hurrah!');
+      await firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+      const user = firebase.auth().currentUser;
+      this.onSignUpSucess(user)
     } catch (error) {
-      return this.onLoginFail.bind(this)
+      this.onSignUpFail();
+      Alert.alert('auth' + error.toString());
     }
   }
 
-   onLoginFail(){
+   onSignUpFail(){
     this.setState({
-      response: 'Authentication Failed',
+      response: 'Acount created failed',
       loading: false
     })
    }
 
-   onLoginSucess(){
+   onSignUpSucess(user){
     this.setState({
       email: '',
       password: '',
-      loading: false
-    })
+      loading: false,
+    });
+    user.updateProfile({
+        displayName: 'Karim',
+        photoURL: 'https://firebase.google.com/_static/4273b0fc6c/images/firebase/lockup.png',
+      }).then(() => {
+        
+      }).catch((error) => {
+        Alert.alert(error);
+      });
    }
 
    renderButton() {
       if(this.state.loading) {
-        return <ActivityIndicator style={styles.spinner} size="small" />
+        return <ActivityIndicator style={styles.spinner} size="large" />
       }
 
       return (
-      <TouchableOpacity onPress={this.signIn}>
+      <TouchableOpacity onPress={this.signUp}>
           <View style={styles.btn}>
-            <Text style={styles.text}>SIGN IN</Text>
+            <Text style={styles.text}>SIGN UP</Text>
           </View>
         </TouchableOpacity>
       );
@@ -70,12 +80,12 @@ export default class LogInScreen extends Component {
     return (
       <View style={styles.container}>
         <Feild
-          placeholder="type your email"
+          placeholder="exp: me@gmail.com"
           title="Email"
           onChangeText={email => this.setState({ email })}
         />
         <Feild
-          placeholder="type your password"
+          placeholder="should be more then 6 characters"
           title="Password"
           secureTextEntry={true}
           onChangeText={password => this.setState({ password })}
@@ -105,8 +115,8 @@ class Feild extends Component {
 
 LogInScreen.propType = {
   title: PropTypes.string.isRequired,
-  password: PropTypes.string,
-  email: PropTypes.string,
+  password: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
 };
 
 const styles = StyleSheet.create({

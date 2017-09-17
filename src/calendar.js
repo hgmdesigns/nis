@@ -18,16 +18,19 @@ export default class CalenderScreen extends React.Component{
     super();
     this.state = {
       items: {},
+      grade: '',
   }
-}
+};
+ setGrade(value) {
+    this.grade = value;
+  }
 
   render() {
-    console.log(this.state.items);
+    const user = firebase.auth().currentUser;
     return (
       <Agenda
         items={this.state.items}
         loadItemsForMonth={this.loadItems.bind(this)}
-        selected={'2017-09-10'}
         renderItem={this.renderItem.bind(this)}
         renderEmptyDate={this.renderEmptyDate.bind(this)}
         rowHasChanged={this.rowHasChanged.bind(this)}
@@ -38,7 +41,7 @@ export default class CalenderScreen extends React.Component{
   }
 
   loadItems(){
-    const dbRef = firebase.database().ref().child('events');
+    const dbRef = firebase.database().ref().child('events/');
     dbRef.on('value', snap => {
       this.setState({
         items: snap.val()

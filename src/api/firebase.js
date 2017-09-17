@@ -1,5 +1,7 @@
 import * as firebase from 'firebase';
 import firebaseApp from './firebaseApp';
+import React from 'react';
+import {Alert, alert} from 'react-native';
 
 class Backend {
   uid = '';
@@ -10,9 +12,26 @@ class Backend {
       if (user) {
         this.setUid(user.uid);
       } else {
-        console.log('err');
+        Alert.alert("Seems like an erorr");
       }
     });
+};
+componentWillMount(){
+  grade = '';
+  firebase.database().ref('users/' + this.uid + '/grade').on('value', snap => {
+    if (snap) {
+      this.setGrade(snap.val());
+    } else {
+      Alert.alert('An error with referring students grade')
+    }
+  });
+  Alert.alert(this.grade);
+}
+  setGrade(value) {
+    this.grade = value;
+  }
+  getGrade() {
+    return this.grade;
   }
   setUid(value) {
     this.uid = value;
@@ -20,9 +39,10 @@ class Backend {
   getUid() {
     return this.uid;
   }
+
   // retrieve the messages from the Backend
   loadMessages(callback) {
-    this.messagesRef = firebase.database().ref('group/10/messages');
+    this.messagesRef = firebase.database().ref('messages/' + this.getGrade());
     this.messagesRef.off();
     const onReceive = (data) => {
       const message = data.val();

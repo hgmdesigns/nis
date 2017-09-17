@@ -8,18 +8,11 @@ export default class Chat extends React.Component {
   static navigationOptions: {
       title: 'CHATS',
     };
-
   state = {
     messages: [],
     loadEarlier: true,
     isLoadingEarlier: true,
   };
-
-
-  
-  componentWillMount() {
-
-  }
   render() {
     return (
       <GiftedChat
@@ -31,6 +24,7 @@ export default class Chat extends React.Component {
           _id: Backend.getUid(),
           name: this.props.name,
         }}
+        loadEarlier={true}
       />
     );
   }

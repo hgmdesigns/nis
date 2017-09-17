@@ -1,75 +1,85 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// 15.5.10
-// 15.5.10
-// 15.5.10
 import {
   Text,
   View,
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator
 } from 'react-native';
-import KeyboardSpacer from 'react-native-keyboard-spacer';
-// 0.3.1
-// 0.3.1
 import * as firebase from 'firebase';
-// 4.3.0
+import firebaseApp from '../api/firebaseApp';
+
 
 export default class SignUpScreen extends Component {
-  componentWillMount() {
-    firebase.initializeApp({
-      apiKey: 'AIzaSyBy11eOj1te5UBfqYmhrX6hLIsSaaE71do',
-      authDomain: 'hgmenis.firebaseapp.com',
-      databaseURL: 'https://hgmenis.firebaseio.com',
-      projectId: 'hgmenis',
-      storageBucket: 'hgmenis.appspot.com',
-      messagingSenderId: '457564974792',
-    });
-  }
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       email: '',
       password: '',
       response: '',
+      loading: false
     };
     this.signUp = this.signUp.bind(this);
   }
   async signUp() {
+      this.setState({
+        loading: true
+      })
+
     try {
       await firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-      this.setState({
-        response: 'Account created!',
-      });
-    } catch(error) {
-      console.log(error);
-      this.setState({
-        response: error.toString(), 
-      });
+        onSignUpSucess()
+    } catch (error) {
+      return this.onSignUpFail.bind(this)
     }
   }
+
+   onSignUpFail(){
+    this.setState({
+      response: 'Acount created failed',
+      loading: false
+    })
+   }
+
+   onSignUpSucess(){
+    this.setState({
+      email: '',
+      password: '',
+      loading: false
+    });
+   }
+
+   renderButton() {
+      if(this.state.loading) {
+        return <ActivityIndicator style={styles.spinner} size="large" />
+      }
+
+      return (
+      <TouchableOpacity onPress={this.signUp}>
+          <View style={styles.btn}>
+            <Text style={styles.text}>NEXT</Text>
+          </View>
+        </TouchableOpacity>
+      );
+    }
 
   render() {
     return (
       <View style={styles.container}>
         <Feild
-          placeholder="type your email"
+          placeholder="exp: me@gmail.com"
           title="Email"
           onChangeText={email => this.setState({ email })}
         />
         <Feild
-          placeholder="type your password"
+          placeholder="should be more then 6 characters"
           title="Password"
           secureTextEntry={true}
           onChangeText={password => this.setState({ password })}
         />
-        <TouchableOpacity onPress={this.signUp}>
-          <View style={styles.btn}>
-            <Text style={styles.text}>SIGN UP</Text>
-          </View>
-        </TouchableOpacity>
-        <KeyboardSpacer />
+        {this.renderButton()}
       </View>
     );
   }
@@ -92,7 +102,7 @@ class Feild extends Component {
   }
 }
 
-App.propType = {
+SignUpScreen.propType = {
   title: PropTypes.string.isRequired,
   password: PropTypes.string,
   email: PropTypes.string,
@@ -131,4 +141,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#2189C5',
   },
+  error: {
+    color: 'red',
+    alignSelf: 'center',
+  },
+  spinner: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#2189C5',
+  }
 });
