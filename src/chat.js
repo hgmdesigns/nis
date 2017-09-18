@@ -34,7 +34,7 @@ export default class Chat extends React.Component {
           Backend.sendMessage(message);
         }}
         user={{
-          id: Backend.getUid(),
+          _id: Backend.getUid(),
           name: this.props.name,
         }}
         loadEarlier={true}

@@ -7,31 +7,29 @@ import firebaseApp from './firebaseApp';
 class Backend {
   uid = '';
   messagesRef = null;
+  grade = '';
   // initialize Firebase Backend
   constructor() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.setUid(user.uid);
       } else {
-        Alert.alert('Seems like an erorr');
+        Alert.alert('Seems like an erorr with Auth');
       }
     });
-}
-componentWillMount() {
-  firebase.database().ref(`users/${this.uid}/grade`).on('value', snap => {
-    if (snap) {
-      this.setGrade(snap.val());
-    } else {
-      Alert.alert('An error with referring students grade');
-    }
-  });
-  Alert.alert(this.grade);
+    firebase.database().ref(`users/${this.uid}/grade`).on('value', snap => {
+      if (snap) {
+        this.setGrade(snap.val());
+      } else {
+        Alert.alert('An error with referring students grade');
+      }
+    });
 }
   setGrade(value) {
     this.grade = value;
   }
   getGrade() {
-    return this.grade;
+     return this.grade;
   }
   setUid(value) {
     this.uid = value;
@@ -47,11 +45,11 @@ componentWillMount() {
     const onReceive = (data) => {
       const message = data.val();
       callback({
-        id: data.key,
+        _id: data.key,
         text: message.text,
         createdAt: new Date(message.createdAt),
         user: {
-          id: message.user.id,
+          _id: message.user._id,
           name: message.user.name,
         },
       });
